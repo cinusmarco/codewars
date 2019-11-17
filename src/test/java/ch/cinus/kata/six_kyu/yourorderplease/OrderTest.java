@@ -1,4 +1,4 @@
-package ch.cinus.kata;
+package ch.cinus.kata.six_kyu.yourorderplease;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;

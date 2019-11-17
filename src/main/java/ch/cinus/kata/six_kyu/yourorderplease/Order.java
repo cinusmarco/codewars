@@ -1,4 +1,4 @@
-package ch.cinus.kata;
+package ch.cinus.kata.six_kyu.yourorderplease;
 
 import java.util.Arrays;
 import java.util.Comparator;
