@@ -1,4 +1,4 @@
-package ch.cinus.kata.fivekyu;
+package ch.cinus.kata.fivekyu.josephussurvivor;
 
 public class JosephusSurvivor {
   public static int josephusSurvivor(final int n, final int k) {
