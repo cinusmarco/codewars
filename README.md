@@ -23,3 +23,4 @@ https://www.codewars.com/users/cinusmarco
 ### 5 Kyu
     - Common denominators
     - Josephus survivor    
+    - Decimal to Factorial and Back
