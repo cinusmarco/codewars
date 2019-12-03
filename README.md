@@ -17,6 +17,7 @@ https://www.codewars.com/users/cinusmarco
     - Create phone number
     - Detect pangram
     - Find odd
+    - Find the parity outlier
     - Roman numeral encoder
     - The deaf rats of Hamelin
     - Tribonacci sequence
