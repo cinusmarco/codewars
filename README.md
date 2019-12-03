@@ -7,6 +7,7 @@ https://www.codewars.com/users/cinusmarco
 ### 8 Kyu
     - Find smallest int in array
 ### 7 Kyu
+    - Complementary DNA
     - GPS Speed
     - Mumbling
     - Vowel Count
@@ -22,5 +23,7 @@ https://www.codewars.com/users/cinusmarco
     - Your order please
 ### 5 Kyu
     - Common denominators
-    - Josephus survivor    
     - Decimal to Factorial and Back
+    - Josephus survivor    
+    - Simple Pig Latin
+    
