@@ -1,7 +1,6 @@
 package ch.cinus.kata.fivekyu.josephussurvivor;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,12 +12,16 @@ class JosephusSurvivorTest {
   @ParameterizedTest(name = "Testing where n = {0} and k = {1}")
   @MethodSource("provider")
   void josephusTest(final int n, final int k, final int expected) {
-    assertThat(JosephusSurvivor.josephusSurvivor(n, k), equalTo(expected));
+    assertThat(JosephusSurvivor.josephusSurvivor(n, k)).isEqualTo(expected);
   }
 
   private static Stream<Arguments> provider() {
     return Stream.of(
         Arguments.of(7, 3, 4),
+        Arguments.of(9, 4, 1),
+        Arguments.of(4, 7, 2),
+        Arguments.of(6, 4, 5),
+        Arguments.of(5, 5, 2),
         Arguments.of(11, 19, 10),
         Arguments.of(40, 3, 28),
         Arguments.of(14, 2, 13),
