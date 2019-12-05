@@ -4,6 +4,8 @@ https://www.codewars.com/users/cinusmarco
 
 ## Solved Katas
 
+### Beta
+    - Word to initial number
 ### 8 Kyu
     - Find smallest int in array
 ### 7 Kyu
