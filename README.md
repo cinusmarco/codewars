@@ -15,6 +15,7 @@ https://www.codewars.com/users/cinusmarco
     - Vowel Count
     - You're a square
 ### 6 Kyu
+    - Word a10n (abbreviation)
     - Bouncing nall
     - Create phone number
     - Detect pangram
