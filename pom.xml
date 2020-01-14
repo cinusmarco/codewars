@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>ch.cinus.kata</groupId>
-  <artifactId>your-order-please</artifactId>
+  <artifactId>codewars</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
@@ -13,6 +13,7 @@
     <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
     <java.version>11</java.version>
     <assertj-core.version>3.14.0</assertj-core.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>

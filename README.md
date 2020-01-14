@@ -23,10 +23,11 @@ https://www.codewars.com/users/cinusmarco
     - Find odd
     - Find the parity outlier
     - Roman numeral encoder
+    - Stop gninnipS My sdroW!
+    - Strongest Even Number
     - The deaf rats of Hamelin
     - Tribonacci sequence
-    - Your order please
-    - Stop gninnipS My sdroW!
+    - Your order please    
 ### 5 Kyu
     - Common denominators
     - Decimal to Factorial and Back
