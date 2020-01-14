@@ -8,6 +8,7 @@ https://www.codewars.com/users/cinusmarco
     - Word to initial number
 ### 8 Kyu
     - Find smallest int in array
+    - Find numbers which are divisible by given number
 ### 7 Kyu
     - Complementary DNA
     - GPS Speed
