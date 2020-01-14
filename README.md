@@ -26,6 +26,7 @@ https://www.codewars.com/users/cinusmarco
     - The deaf rats of Hamelin
     - Tribonacci sequence
     - Your order please
+    - Stop gninnipS My sdroW!
 ### 5 Kyu
     - Common denominators
     - Decimal to Factorial and Back
