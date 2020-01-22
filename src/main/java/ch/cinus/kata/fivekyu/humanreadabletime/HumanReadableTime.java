@@ -8,6 +8,6 @@ public class HumanReadableTime {
     int minutes = hoursAndMinutes % 60;
     int hours = hoursAndMinutes / 60;
 
-    return String.format("%02d:%02d:%02d", hours,minutes, seconds);
+    return String.format("%02d:%02d:%02d", hours, minutes, seconds);
   }
 }
