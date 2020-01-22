@@ -31,6 +31,7 @@ https://www.codewars.com/users/cinusmarco
 ### 5 Kyu
     - Common denominators
     - Decimal to Factorial and Back
+    - Human Readable Time
     - Josephus survivor    
     - Simple Pig Latin
     
