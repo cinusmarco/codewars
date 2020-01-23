@@ -16,7 +16,11 @@ public class User {
     this.progress = progress;
   }
 
-  void incProgress(int exerciseRank) {
+  void incProgress(int exerciseRank) throws Exception {
+    if (exerciseRank < -8 || exerciseRank > 8 || exerciseRank == 0)
+      throw new IllegalArgumentException();
+    logger.info(
+        String.format("User[%d, %d]  exerciseRank = %d", this.rank, this.progress, exerciseRank));
     int increase = computeGain(exerciseRank);
     updateProgress(increase);
   }
@@ -39,6 +43,7 @@ public class User {
     int delta = numberOfRanks;
     if (rank < 0 && rank + numberOfRanks >= 0) delta++;
     this.rank += delta;
+    this.rank = Math.min(this.rank, 8);
   }
 
   private int computeGain(int exerciseRank) {

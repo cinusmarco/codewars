@@ -18,7 +18,7 @@ public class SolutionTestJunit4 {
   }
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     increaseProgressTest(-8, 0, -7, -8, 10);
     increaseProgressTest(-8, 10, -7, -8, 20);
     increaseProgressTest(-8, 10, -4, -7, 70);
@@ -29,6 +29,7 @@ public class SolutionTestJunit4 {
     increaseProgressTest(-2, 90, -1, -1, 0);
     increaseProgressTest(-1, 90, 1, 1, 0);
     increaseProgressTest(-8, 0, 1, -2, 40);
+    increaseProgressTest(8, 100, 8, 8, 100);
   }
 
   void increaseProgressTest(
@@ -36,7 +37,8 @@ public class SolutionTestJunit4 {
       int startingProgress,
       int exerciseRank,
       int expectedRank,
-      int expectedProgress) {
+      int expectedProgress)
+      throws Exception {
     User user = new User(startingRank, startingProgress);
 
     user.incProgress(exerciseRank);
