@@ -29,7 +29,8 @@ public class SolutionTestJunit4 {
     increaseProgressTest(-2, 90, -1, -1, 0);
     increaseProgressTest(-1, 90, 1, 1, 0);
     increaseProgressTest(-8, 0, 1, -2, 40);
-    increaseProgressTest(8, 100, 8, 8, 100);
+    increaseProgressTest(7, 97, 7, 8, 0);
+    increaseProgressTest(1, 20, -1, 1, 21);
   }
 
   void increaseProgressTest(
