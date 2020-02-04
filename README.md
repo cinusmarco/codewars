@@ -1,4 +1,4 @@
-# codewars
+# Codewars
 
 https://www.codewars.com/users/cinusmarco
 
