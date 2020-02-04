@@ -15,18 +15,21 @@ https://www.codewars.com/users/cinusmarco
     - Mumbling
     - Vowel Count
     - You're a square
-### 6 Kyu
-    - Word a10n (abbreviation)
-    - Bouncing nall
+    - Poker hand is flush
+    - Predict your age
+### 6 Kyu    
+    - Bouncing ball
     - Create phone number
     - Detect pangram
     - Find odd
     - Find the parity outlier
+    - Multiples of 3 or 5
     - Roman numeral encoder
     - Stop gninnipS My sdroW!
     - Strongest Even Number
     - The deaf rats of Hamelin
     - Tribonacci sequence
+    - Word a10n (abbreviation)
     - Your order please    
 ### 5 Kyu
     - Common denominators
@@ -35,4 +38,9 @@ https://www.codewars.com/users/cinusmarco
     - Human Readable Time
     - Josephus survivor    
     - Simple Pig Latin
+### 4 Kyu
+    - Permutations
+    - Ranking System
+    - Strip comments
+    
     
