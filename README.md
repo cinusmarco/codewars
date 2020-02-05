@@ -42,5 +42,7 @@ https://www.codewars.com/users/cinusmarco
     - Permutations
     - Ranking System
     - Strip comments
+### 3 Kyu
+    - Binomial Expansion
     
     
