@@ -39,6 +39,7 @@ https://www.codewars.com/users/cinusmarco
     - Josephus survivor    
     - Simple Pig Latin
 ### 4 Kyu
+    - parseInt() reloaded
     - Permutations
     - Ranking System
     - Strip comments
