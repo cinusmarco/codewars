@@ -23,6 +23,7 @@ https://www.codewars.com/users/cinusmarco
     - Detect pangram
     - Find odd
     - Find the parity outlier
+    - Morce Code Decoder
     - Multiples of 3 or 5
     - Roman numeral encoder
     - Stop gninnipS My sdroW!
