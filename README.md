@@ -25,6 +25,7 @@ https://www.codewars.com/users/cinusmarco
     - Find the parity outlier
     - Morce Code Decoder
     - Multiples of 3 or 5
+    - Persistent Bugger.
     - Roman numeral encoder
     - Stop gninnipS My sdroW!
     - Strongest Even Number
