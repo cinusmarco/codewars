@@ -21,6 +21,7 @@ https://www.codewars.com/users/cinusmarco
     - Bouncing ball
     - Create phone number
     - Detect pangram
+    - Disease Spread
     - Encrypt this!
     - Find odd
     - Find the parity outlier
