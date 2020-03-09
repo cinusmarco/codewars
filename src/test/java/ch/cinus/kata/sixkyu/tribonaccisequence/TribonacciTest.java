@@ -10,12 +10,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class XbonacciTest {
-  private Xbonacci variabonacci;
+class TribonacciTest {
+  private Tribonacci variabonacci;
 
   @BeforeEach
   void setUp() throws Exception {
-    variabonacci = new Xbonacci();
+    variabonacci = new Tribonacci();
   }
 
   @AfterEach

@@ -23,6 +23,7 @@ https://www.codewars.com/users/cinusmarco
     - Detect pangram
     - Disease Spread
     - Encrypt this!
+    - Fibonacci, Tribonacci and friends
     - Find odd
     - Find the parity outlier
     - Morce Code Decoder

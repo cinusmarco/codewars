@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Xbonacci {
+public class Tribonacci {
 
   public double[] tribonacciFirst(double[] s, int n) {
     if (n == 0) {
