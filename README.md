@@ -44,6 +44,7 @@ https://www.codewars.com/users/cinusmarco
     - Josephus survivor    
     - Simple Pig Latin
 ### 4 Kyu
+    - Hamming numbers
     - parseInt() reloaded
     - Permutations
     - Ranking System
