@@ -9,6 +9,7 @@ https://www.codewars.com/users/cinusmarco
 ### 8 Kyu
     - Find smallest int in array
     - Find numbers which are divisible by given number
+    - altERnaTIng cAsE <=> ALTerNAtiNG CaSe
 ### 7 Kyu
     - Complementary DNA
     - GPS Speed
