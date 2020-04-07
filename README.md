@@ -10,6 +10,7 @@ https://www.codewars.com/users/cinusmarco
     - Find smallest int in array
     - Find numbers which are divisible by given number
     - altERnaTIng cAsE <=> ALTerNAtiNG CaSe
+    - Is it even?
 ### 7 Kyu
     - Complementary DNA
     - GPS Speed
