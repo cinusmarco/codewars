@@ -56,5 +56,8 @@ https://www.codewars.com/users/cinusmarco
     - Binomial Expansion
     - Papers, please
     - Prime Streaming (PG-13)
+### 2 Kyu
+    - Prime Streaming (NC-17) (WIP, to enhance speed)    
+
     
     
