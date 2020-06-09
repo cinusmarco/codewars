@@ -32,6 +32,7 @@ https://www.codewars.com/users/cinusmarco
     - Multiples of 3 or 5
     - Persistent Bugger.
     - Roman numeral encoder
+    - Split and then add both sides of an array together.
     - Stop gninnipS My sdroW!
     - Strongest Even Number
     - The deaf rats of Hamelin
