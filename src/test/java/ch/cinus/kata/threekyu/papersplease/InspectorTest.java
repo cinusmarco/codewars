@@ -4,13 +4,12 @@
 
 package ch.cinus.kata.threekyu.papersplease;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 class InspectorTest {
 
@@ -46,7 +45,9 @@ class InspectorTest {
   void inspector_deniesCriminal() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Katrina Pejic");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Katrina Pejic");
 
     final Map<String, String> peijc =
         Map.of(
@@ -66,7 +67,9 @@ class InspectorTest {
   void denied_passportExpired() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Katrina Pejic");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Katrina Pejic");
 
     final Map<String, String> ortiz =
         Map.of(
@@ -86,7 +89,9 @@ class InspectorTest {
   void denied_passportExpiredAndMissingVaccination() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Katrina Pejic");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Katrina Pejic");
     inspector.receiveBulletin(
         "Allow citizens of Kolechia\n"
             + "Deny citizens of Impor\n"
@@ -122,7 +127,9 @@ class InspectorTest {
   void incrementalTest() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Jan Jager");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Jan Jager");
 
     // Put first checks here
     final Map<String, String> ibrahimovic =
@@ -169,9 +176,11 @@ class InspectorTest {
     assertThat(inspector.inspect(jager)).isEqualTo("Cause no trouble.");
     assertThat(inspector.inspect(kowalska)).isEqualTo("Cause no trouble.");
 
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
 
-    assertThat(inspector.inspect(kowalska)).isEqualTo("Entry denied: missing required access permit.");
+    assertThat(inspector.inspect(kowalska))
+        .isEqualTo("Entry denied: missing required access permit.");
 
     final Map<String, String> weiss =
         Map.of(
@@ -204,7 +213,8 @@ class InspectorTest {
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
 
     final Map<String, String> muller =
         Map.of(
@@ -234,7 +244,8 @@ class InspectorTest {
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
 
     final Map<String, String> stolichnaya =
         Map.of(
@@ -267,7 +278,8 @@ class InspectorTest {
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
     inspector.receiveBulletin(
         "Citizens of Arstotzka require ID card\n"
             + "Deny citizens of Obristan\n"
@@ -284,7 +296,10 @@ class InspectorTest {
                 + "EXP: 1983.03.04\n"
                 + "NAME: Muller, Giovanni",
             "diplomatic_authorization",
-            "NATION: Impor\n" + "NAME: Muller, Giovanni\n" + "ID#: TLI5M-ROXXN\n" + "ACCESS: Arstotzka, Antegria");
+            "NATION: Impor\n"
+                + "NAME: Muller, Giovanni\n"
+                + "ID#: TLI5M-ROXXN\n"
+                + "ACCESS: Arstotzka, Antegria");
 
     assertThat(inspector.inspect(muller)).isEqualTo("Cause no trouble.");
   }
@@ -295,7 +310,8 @@ class InspectorTest {
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
     inspector.receiveBulletin(
         "Citizens of Arstotzka require ID card\n"
             + "Deny citizens of Obristan\n"
@@ -333,9 +349,12 @@ class InspectorTest {
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
     inspector.receiveBulletin(
-        "Citizens of Arstotzka require ID card\n" + "Deny citizens of Impor\n" + "Wanted by the State: Sergei Weiss");
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Citizens of Arstotzka require ID card\n"
+            + "Deny citizens of Impor\n"
+            + "Wanted by the State: Sergei Weiss");
 
     final Map<String, String> muller =
         Map.of(
@@ -359,9 +378,12 @@ class InspectorTest {
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
     inspector.receiveBulletin(
-        "Citizens of Arstotzka require ID card\n" + "Deny citizens of Impor\n" + "Wanted by the State: Sergei Weiss");
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Citizens of Arstotzka require ID card\n"
+            + "Deny citizens of Impor\n"
+            + "Wanted by the State: Sergei Weiss");
 
     final Map<String, String> muller =
         Map.of(
@@ -381,11 +403,14 @@ class InspectorTest {
   void detainment_whenNameMismatch() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Zera Graham");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Zera Graham");
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
     inspector.receiveBulletin(
         "Deny citizens of Impor\n"
             + "Entrants require tetanus vaccination\n"
@@ -403,9 +428,14 @@ class InspectorTest {
                 + "EXP: 1984.06.23\n"
                 + "NAME: Praskovic, Otto",
             "ID_card",
-            "NAME: Chernovski, Giovanni\n" + "DOB: 1914.04.21\n" + "HEIGHT: 186.0cm\n" + "WEIGHT: 99.0kg",
+            "NAME: Chernovski, Giovanni\n"
+                + "DOB: 1914.04.21\n"
+                + "HEIGHT: 186.0cm\n"
+                + "WEIGHT: 99.0kg",
             "certificate_of_vaccination",
-            "NAME: Chernovski, Giovanni\n" + "ID#: RSRHT-SNKSZ\n" + "VACCINES: tetanus, polio, HPV");
+            "NAME: Chernovski, Giovanni\n"
+                + "ID#: RSRHT-SNKSZ\n"
+                + "VACCINES: tetanus, polio, HPV");
 
     assertThat(inspector.inspect(chernovski)).isEqualTo("Detainment: name mismatch.");
   }
@@ -414,11 +444,14 @@ class InspectorTest {
   void entryDenied_missingPassport() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Zera Graham");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Zera Graham");
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
     inspector.receiveBulletin(
         "Deny citizens of Impor\n"
             + "Entrants require tetanus vaccination\n"
@@ -430,7 +463,9 @@ class InspectorTest {
             "ID_card",
             "NAME: Yankov, Vasily\n" + "DOB: 1960.11.22\n" + "HEIGHT: 149.0cm\n" + "WEIGHT: 45.0kg",
             "certificate_of_vaccination",
-            "NAME: Yankov, Vasily\n" + "ID#: GJ7L8-IBUET\n" + "VACCINES: HPV, tetanus, tuberculosis");
+            "NAME: Yankov, Vasily\n"
+                + "ID#: GJ7L8-IBUET\n"
+                + "VACCINES: HPV, tetanus, tuberculosis");
 
     assertThat(inspector.inspect(yankov)).isEqualTo("Entry denied: missing required passport.");
   }
@@ -439,11 +474,14 @@ class InspectorTest {
   void entryDenied_missingPassport_foreigner() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Zera Graham");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Zera Graham");
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
     inspector.receiveBulletin(
         "Deny citizens of Impor\n"
             + "Entrants require tetanus vaccination\n"
@@ -453,7 +491,9 @@ class InspectorTest {
     final Map<String, String> yankov =
         Map.of(
             "certificate_of_vaccination",
-            "NAME: Macek, Gunther\n" + "ID#: DL2J9-REAOS\n" + "VACCINES: cholera, polio, hepatitis B",
+            "NAME: Macek, Gunther\n"
+                + "ID#: DL2J9-REAOS\n"
+                + "VACCINES: cholera, polio, hepatitis B",
             "diplomatic_authorization",
             "NATION: Antegria\n"
                 + "NAME: Macek, Gunther\n"
@@ -467,13 +507,18 @@ class InspectorTest {
   void entryDenied_CitizenOfBannedNation() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Zera Graham");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Zera Graham");
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
     inspector.receiveBulletin(
-        "Citizens of Arstotzka require ID card\n" + "Deny citizens of Impor\n" + "Wanted by the State: Borek Conrad");
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Citizens of Arstotzka require ID card\n"
+            + "Deny citizens of Impor\n"
+            + "Wanted by the State: Borek Conrad");
 
     final Map<String, String> yankov =
         Map.of(
@@ -502,11 +547,14 @@ class InspectorTest {
   void entryDenied_MissingRequiredVaccination() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Zera Graham");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Zera Graham");
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
     inspector.receiveBulletin(
         "Citizens of Arstotzka require ID card\n"
             + "Deny citizens of Obristan\n"
@@ -542,11 +590,14 @@ class InspectorTest {
   void entryAllowedToForeigner() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Zera Graham");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Zera Graham");
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
     inspector.receiveBulletin(
         "Allow citizens of Antegria\n"
             + "Deny citizens of Impor\n"
@@ -582,11 +633,14 @@ class InspectorTest {
   void entryDenied_invalidDiplomaticAutorization() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Zera Graham");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Zera Graham");
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Ibrahim Spektor");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Erik Ibrahimovic");
     inspector.receiveBulletin(
         "Allow citizens of Antegria\n"
             + "Deny citizens of Impor\n"
@@ -604,20 +658,27 @@ class InspectorTest {
                 + "EXP: 1985.08.22\n"
                 + "NAME: Stoyakovich, Stefan",
             "diplomatic_authorization",
-            "NATION: Kolechia\n" + "NAME: Stoyakovich, Stefan\n" + "ID#: ARN4S-KS29W\n" + "ACCESS: Antegria, Impor");
+            "NATION: Kolechia\n"
+                + "NAME: Stoyakovich, Stefan\n"
+                + "ID#: ARN4S-KS29W\n"
+                + "ACCESS: Antegria, Impor");
 
-    assertThat(inspector.inspect(stoyakovich)).isEqualTo("Entry denied: invalid diplomatic authorization.");
+    assertThat(inspector.inspect(stoyakovich))
+        .isEqualTo("Entry denied: invalid diplomatic authorization.");
   }
 
   @Test
   void entryDenied_AccessPermitExpired() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Erik Stoyakovich");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Erik Stoyakovich");
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Alfred Latva");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Aron Xavier");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Aron Xavier");
     inspector.receiveBulletin(
         "Citizens of Arstotzka require ID card\n"
             + "Deny citizens of Antegria\n"
@@ -627,9 +688,13 @@ class InspectorTest {
             + "Entrants require polio vaccination\n"
             + "Wanted by the State: Erika Kierkgaard");
     inspector.receiveBulletin(
-        "Allow citizens of Antegria\n" + "Deny citizens of Obristan\n" + "Wanted by the State: Kamala Lovska");
+        "Allow citizens of Antegria\n"
+            + "Deny citizens of Obristan\n"
+            + "Wanted by the State: Kamala Lovska");
     inspector.receiveBulletin(
-        "Allow citizens of Obristan\n" + "Deny citizens of Impor\n" + "Wanted by the State: Leonid Lukowski");
+        "Allow citizens of Obristan\n"
+            + "Deny citizens of Impor\n"
+            + "Wanted by the State: Leonid Lukowski");
     inspector.receiveBulletin(
         "Allow citizens of Impor\n"
             + "Deny citizens of Kolechia\n"
@@ -667,11 +732,14 @@ class InspectorTest {
   void entryDenied_MissingRequiredCertificateOfVaccination_singleCountry() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Eleanor Praskovic");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Eleanor Praskovic");
     inspector.receiveBulletin(
         "Allow citizens of Antegria, Impor, Kolechia, Obristan, Republia, United Federation\n"
             + "Wanted by the State: Alek Schulz");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Eva Babayev");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Eva Babayev");
     inspector.receiveBulletin(
         "Citizens of Arstotzka require ID card\n"
             + "Deny citizens of Republia\n"
@@ -706,21 +774,27 @@ class InspectorTest {
                 + "WEIGHT: 45.0kg\n"
                 + "EXP: 1985.06.12");
 
-    assertThat(inspector.inspect(stoyakovich)).isEqualTo("Entry denied: missing required certificate of vaccination.");
+    assertThat(inspector.inspect(stoyakovich))
+        .isEqualTo("Entry denied: missing required certificate of vaccination.");
   }
 
   @Test
   void entryDenied_toWorkerWithoutWorkpass() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Robert Vyas");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Andre Harkonnen");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Robert Vyas");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Andre Harkonnen");
     inspector.receiveBulletin(
         "Citizens of Arstotzka require ID card\n"
             + "Deny citizens of Impor\n"
             + "Wanted by the State: Kristina Frederikson");
     inspector.receiveBulletin(
-        "Foreigners require polio vaccination\n" + "Wanted by the State: Roberta Xavier\n" + "Deny citizens of Impor");
+        "Foreigners require polio vaccination\n"
+            + "Wanted by the State: Roberta Xavier\n"
+            + "Deny citizens of Impor");
     inspector.receiveBulletin(
         "Allow citizens of United Federation\n"
             + "Deny citizens of Kolechia\n"
@@ -755,21 +829,27 @@ class InspectorTest {
             "certificate_of_vaccination",
             "NAME: Jensen, Andre\n" + "ID#: WP932-VF4XZ\n" + "VACCINES: polio, HPV, measles");
 
-    assertThat(inspector.inspect(stoyakovich)).isEqualTo("Entry denied: missing required work pass.");
+    assertThat(inspector.inspect(stoyakovich))
+        .isEqualTo("Entry denied: missing required work pass.");
   }
 
   @Test
   void entryAllowed_toWorkerWithWorkpass() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Robert Vyas");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Andre Harkonnen");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Robert Vyas");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Andre Harkonnen");
     inspector.receiveBulletin(
         "Citizens of Arstotzka require ID card\n"
             + "Deny citizens of Impor\n"
             + "Wanted by the State: Kristina Frederikson");
     inspector.receiveBulletin(
-        "Foreigners require polio vaccination\n" + "Wanted by the State: Roberta Xavier\n" + "Deny citizens of Impor");
+        "Foreigners require polio vaccination\n"
+            + "Wanted by the State: Roberta Xavier\n"
+            + "Deny citizens of Impor");
     inspector.receiveBulletin(
         "Allow citizens of United Federation\n"
             + "Deny citizens of Kolechia\n"
@@ -813,8 +893,11 @@ class InspectorTest {
   void entryDenied_grantOfAsylumExpired() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Erika Lukowski");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Hubert Rosebrova");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Erika Lukowski");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Hubert Rosebrova");
     inspector.receiveBulletin(
         "Citizens of Arstotzka require ID card\n"
             + "Deny citizens of Republia\n"
@@ -860,8 +943,11 @@ class InspectorTest {
   void entryDenied_CitizenOfBannedNation_evenIfMissingWorkPass() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Erika Lukowski");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Hubert Rosebrova");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Erika Lukowski");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Hubert Rosebrova");
     inspector.receiveBulletin(
         "Citizens of Arstotzka require ID card\n"
             + "Deny citizens of Republia\n"
@@ -907,8 +993,11 @@ class InspectorTest {
   void entryDenied_missingHPVVaccincation() {
     Inspector inspector = new Inspector();
     inspector.receiveBulletin(
-        "Entrants require passport\n" + "Allow citizens of Arstotzka\n" + "Wanted by the State: Kascha Burke");
-    inspector.receiveBulletin("Foreigners require access permit\n" + "Wanted by the State: Jonathan Kerr");
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Kascha Burke");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Jonathan Kerr");
     inspector.receiveBulletin(
         "Citizens of Arstotzka require ID card\n"
             + "Deny citizens of Republia\n"
@@ -935,13 +1024,136 @@ class InspectorTest {
                 + "EXP: 1984.04.02\n"
                 + "NAME: Kowalska, Katrina",
             "certificate_of_vaccination",
-            "NAME: Kowalska, Katrina\n" + "ID#: VNJZQ-SGJRH\n" + "VACCINES: cowpox, cholera, typhus",
+            "NAME: Kowalska, Katrina\n"
+                + "ID#: VNJZQ-SGJRH\n"
+                + "VACCINES: cowpox, cholera, typhus",
             "diplomatic_authorization",
             "NATION: Impor\n"
                 + "NAME: Kowalska, Katrina\n"
                 + "ID#: VNJZQ-SGJRH\n"
                 + "ACCESS: Arstotzka, Antegria, Impor");
 
-    assertThat(inspector.inspect(harkonnen)).isEqualTo("Entry denied: missing required vaccination.");
+    assertThat(inspector.inspect(harkonnen))
+        .isEqualTo("Entry denied: missing required vaccination.");
+  }
+
+  @Test
+  void entryDenied_missingRequiredCertificateOfVaccinations() {
+    Inspector inspector = new Inspector();
+    inspector.receiveBulletin(
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Romeo Tolaj");
+    inspector.receiveBulletin(
+        "Foreigners require access permit\n" + "Wanted by the State: Dominik Czekowicz");
+    inspector.receiveBulletin(
+        "Citizens of Arstotzka require ID card\n"
+            + "Deny citizens of Impor\n"
+            + "Wanted by the State: Joachim Rosebrova");
+    inspector.receiveBulletin(
+        "Deny citizens of Impor\n"
+            + "Entrants require polio vaccination\n"
+            + "Wanted by the State: Viktoria Medici");
+    inspector.receiveBulletin(
+        "Allow citizens of Impor\n"
+            + "Deny citizens of Antegria\n"
+            + "Wanted by the State: Felicia Henriksson");
+    inspector.receiveBulletin(
+        "Allow citizens of Antegria\n"
+            + "Deny citizens of Impor\n"
+            + "Workers require work pass\n"
+            + "Wanted by the State: Rozsa Fischer");
+    inspector.receiveBulletin(
+        "Allow citizens of Impor\n"
+            + "Deny citizens of Antegria\n"
+            + "Wanted by the State: Jan Grech");
+    inspector.receiveBulletin(
+        "Allow citizens of Antegria\n"
+            + "Deny citizens of Obristan\n"
+            + "Entrants no longer require polio vaccination\n"
+            + "Citizens of Antegria, Obristan, Impor, Kolechia require tetanus vaccination\n"
+            + "Wanted by the State: Roman Larsen");
+    inspector.receiveBulletin(
+        "Allow citizens of Obristan\n"
+            + "Deny citizens of Kolechia\n"
+            + "Wanted by the State: Galina Grech");
+    inspector.receiveBulletin(
+        "Allow citizens of Kolechia\n"
+            + "Deny citizens of Obristan\n"
+            + "Wanted by the State: Aleksi Borg");
+    inspector.receiveBulletin(
+        "Allow citizens of Obristan\n"
+            + "Deny citizens of Republia\n"
+            + "Wanted by the State: Andrew Jovanovic");
+    inspector.receiveBulletin(
+        "Allow citizens of Republia\n"
+            + "Deny citizens of Obristan\n"
+            + "Citizens of Antegria, Obristan, Impor, Kolechia no longer require tetanus vaccination\n"
+            + "Entrants require tuberculosis vaccination\n"
+            + "Wanted by the State: Agnes Karlsson");
+    inspector.receiveBulletin(
+        "Allow citizens of Obristan\n"
+            + "Deny citizens of Republia\n"
+            + "Wanted by the State: Abdullah Vyas");
+    inspector.receiveBulletin(
+        "Allow citizens of Republia\n"
+            + "Deny citizens of Obristan\n"
+            + "Wanted by the State: Josefina Evans");
+    inspector.receiveBulletin(
+        "Allow citizens of Obristan\n"
+            + "Deny citizens of Republia\n"
+            + "Wanted by the State: Kristofer Bennet");
+    inspector.receiveBulletin(
+        "Allow citizens of Republia\n"
+            + "Deny citizens of Antegria\n"
+            + "Wanted by the State: Olga Sorenson");
+    inspector.receiveBulletin(
+        "Allow citizens of Antegria\n"
+            + "Deny citizens of Republia\n"
+            + "Entrants no longer require tuberculosis vaccination\n"
+            + "Entrants require hepatitis B vaccination\n"
+            + "Wanted by the State: Dimitry Weisz");
+    final Map<String, String> jovanovic =
+        Map.of(
+            "passport",
+            "NATION: Obristan\n"
+                + "DOB: 1923.12.01\n"
+                + "SEX: F\n"
+                + "ISS: Mergerous\n"
+                + "ID#: H89ZJ-FZUV8\n"
+                + "EXP: 1985.04.09\n"
+                + "NAME: Jovanovic, Mikaela",
+            "access_permit",
+            "NAME: Jovanovic, Mikaela\n"
+                + "NATION: Obristan\n"
+                + "ID#: H89ZJ-FZUV8\n"
+                + "PURPOSE: TRANSIT\n"
+                + "DURATION: 14 DAYS\n"
+                + "HEIGHT: 189.0cm\n"
+                + "WEIGHT: 104.0kg\n"
+                + "EXP: 1985.07.13");
+
+    assertThat(inspector.inspect(jovanovic))
+        .isEqualTo("Entry denied: missing required certificate of vaccination.");
+  }
+
+  @Test
+  void testIfHepatitisB_isAddedToListOfVaccinations() {
+    Inspector inspector = new Inspector();
+    inspector.receiveBulletin(
+        "Entrants require passport\n"
+            + "Allow citizens of Arstotzka\n"
+            + "Wanted by the State: Kascha Burke");
+    inspector.receiveBulletin(
+        "Allow citizens of Antegria\n"
+            + "Deny citizens of Republia\n"
+            + "Entrants require hepatitis B vaccination\n"
+            + "Wanted by the State: Dimitry Weisz");
+
+    assertThat(inspector.requiredVaccinations).isNotNull();
+    Inspector.ALL_COUNTRIES.stream()
+        .forEach(
+            country ->
+                assertThat(inspector.requiredVaccinations.get(country)).contains("hepatitis B"));
   }
 }

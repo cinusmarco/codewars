@@ -53,5 +53,6 @@ https://www.codewars.com/users/cinusmarco
     - Strip comments
 ### 3 Kyu
     - Binomial Expansion
+    - Papers, please
     
     

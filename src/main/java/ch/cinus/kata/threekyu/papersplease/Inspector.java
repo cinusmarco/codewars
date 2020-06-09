@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,31 +27,47 @@ public class Inspector {
   public static final String REPUBLIA = "Republia";
   public static final String UNITED_FEDERATION = "United Federation";
 
-  private static final List<String> FOREIGN_COUNTRIES =
+  static final List<String> FOREIGN_COUNTRIES =
       List.of(ANTEGRIA, IMPOR, KOLECHIA, OBRISTAN, REPUBLIA, UNITED_FEDERATION);
-  private static final List<String> ALL_COUNTRIES =
+  static final List<String> ALL_COUNTRIES =
       Stream.concat(Stream.of(ARSTOTZKA), FOREIGN_COUNTRIES.stream()).collect(Collectors.toList());
 
-  public static final String ENTRY_DENIED_MISSING_REQUIRED_DOCUMENT = "Entry denied: missing required %s.";
+  public static final String ENTRY_DENIED_MISSING_REQUIRED_DOCUMENT =
+      "Entry denied: missing required %s.";
   public static final String FOREIGNERS = "Foreigners";
   public static final String ENTRANTS = "Entrants";
   public static final String CITIZENS = "Citizens of Arstotzka";
 
   private final List<String> allowedEntrance = new ArrayList<>();
   private final Map<String, Set<String>> requiredDocuments = new HashMap<>();
-  private final Map<String, Set<String>> requiredVaccinations = new HashMap<>();
+  final Map<String, Set<String>> requiredVaccinations = new HashMap<>();
 
   private String wantedCriminal;
   private boolean workpassRequired;
 
   public void receiveBulletin(String bulletin) {
-    System.err.println(bulletin);
-    String expandedBulletin = expand(bulletin);
-    allowedEntrance.addAll(extractAllowedEntrance(expandedBulletin));
-    allowedEntrance.removeAll(extractDeniedEntrance(expandedBulletin));
-    wantedCriminal = extractWantedCriminal(expandedBulletin);
-    extractRequiredDocuments(expandedBulletin);
-    updateRequiredVaccinations(expandedBulletin);
+    String[] expandedBulletin = expand(bulletin).split("\n");
+    Arrays.stream(expandedBulletin).forEach(this::handle);
+  }
+
+  private void handle(String instruction) {
+    if (instruction.contains("Allow citizens")) {
+      allowedEntrance.addAll(extractAllowedEntrance(instruction));
+    } else if (instruction.contains("Deny citizens")) {
+      allowedEntrance.removeAll(extractDeniedEntrance(instruction));
+    } else if (instruction.contains("Wanted by the State")) {
+      wantedCriminal = extractWantedCriminal(instruction);
+    } else if (instruction.contains("vaccination") && instruction.contains("no longer")) {
+      extractNoLongerRequiredVaccinations(instruction);
+      updateRequiredDocumentsWithCertificateOfVaccinations();
+    } else if (instruction.contains("vaccination")) {
+      extractRequiredVaccinations(instruction);
+      updateRequiredDocumentsWithCertificateOfVaccinations();
+    } else if (instruction.contains("Workers require work pass")) {
+      workpassRequired = true;
+    } else if (instruction.contains("require")) {
+      extractRequiredDocuments(instruction);
+    }
   }
 
   private String expand(String bulletin) {
@@ -66,7 +81,6 @@ public class Inspector {
   }
 
   public String inspect(Map<String, String> personMap) {
-    System.err.println(personMap);
     Person p = new Person();
 
     personMap.entrySet().stream().forEach(entry -> p.addDocument(entry.getKey(), entry.getValue()));
@@ -91,7 +105,8 @@ public class Inspector {
     // check documents required
     final List<String> requiredDocs = checkRequiredDocuments(p);
     if (!requiredDocs.isEmpty()) {
-      return String.format(ENTRY_DENIED_MISSING_REQUIRED_DOCUMENT, requiredDocs.get(0).replace("_", " "));
+      return String.format(
+          ENTRY_DENIED_MISSING_REQUIRED_DOCUMENT, requiredDocs.get(0).replace("_", " "));
     }
 
     // check for vaccinations
@@ -182,11 +197,13 @@ public class Inspector {
   private List<String> checkRequiredDocumentsForForeigner(Person p) {
 
     List<String> requiredDocs =
-        new ArrayList<>(requiredDocuments.getOrDefault(p.getNation(), Set.of(Person.Document.PASSPORT)));
+        new ArrayList<>(
+            requiredDocuments.getOrDefault(p.getNation(), Set.of(Person.Document.PASSPORT)));
     if (workpassRequired && p.isWorker()) {
       requiredDocs.add(Person.Document.WORK_PASS);
     }
-    requiredDocs.removeAll(p.documents().map(Person.Document::getType).collect(Collectors.toList()));
+    requiredDocs.removeAll(
+        p.documents().map(Person.Document::getType).collect(Collectors.toList()));
 
     // Check for alternatives to ACCESS_PERMIT
     if (requiredDocs.size() == 1
@@ -207,12 +224,14 @@ public class Inspector {
   private List<String> checkRequiredDocumentsForCitizens(Person p) {
     final List<String> requiredDocs =
         new ArrayList<>(requiredDocuments.getOrDefault(ARSTOTZKA, Collections.emptySet()));
-    requiredDocs.removeAll(p.documents().map(Person.Document::getType).collect(Collectors.toList()));
+    requiredDocs.removeAll(
+        p.documents().map(Person.Document::getType).collect(Collectors.toList()));
     return requiredDocs;
   }
 
   private boolean isWantedCriminal(List<String> names) {
-    return wantedCriminal != null && names.stream().anyMatch(n -> Objects.equals(wantedCriminal, n));
+    return wantedCriminal != null
+        && names.stream().anyMatch(n -> Objects.equals(wantedCriminal, n));
   }
 
   private List<String> extractAllowedEntrance(String bulletin) {
@@ -228,31 +247,49 @@ public class Inspector {
   private List<String> parseEntrance(String bulletin, Pattern pattern) {
     final Matcher matcher = pattern.matcher(bulletin);
     if (matcher.find()) {
-      return Arrays.stream(matcher.group(1).split(",")).map(String::trim).collect(Collectors.toList());
+      return Arrays.stream(matcher.group(1).split(","))
+          .map(String::trim)
+          .collect(Collectors.toList());
     }
     return Collections.emptyList();
   }
 
   private void extractRequiredDocuments(String bulletin) {
-    final Pattern pattern = Pattern.compile(".*Citizens of (.+) require (passport|access permit|ID card)\\n?.*");
+    final Pattern pattern =
+        Pattern.compile(".*Citizens of (.+) require (passport|access permit|ID card)\\n?.*");
     final Matcher matcher = pattern.matcher(bulletin);
     if (matcher.find()) {
       String document = matcher.group(2).replace(" ", "_");
-      List<String> whoList = Arrays.stream(matcher.group(1).split(",")).map(String::trim).collect(Collectors.toList());
+      List<String> whoList =
+          Arrays.stream(matcher.group(1).split(",")).map(String::trim).collect(Collectors.toList());
       for (String who : whoList) {
         final Set<String> entrants = requiredDocuments.computeIfAbsent(who, k -> new HashSet<>());
         entrants.add(document);
       }
     }
+  }
 
-    // check if workpass is needed
-    if (bulletin.contains("Workers require work pass")) {
-      workpassRequired = true;
+  private void updateRequiredDocumentsWithCertificateOfVaccinations() {
+    // update also the required documents
+    ALL_COUNTRIES.stream().forEach(this::updateRequiredDocumentsWithCertificateOfVaccinations);
+  }
+
+  private void updateRequiredDocumentsWithCertificateOfVaccinations(String key) {
+    // if the required vaccinations for that country is not empty --> certificate of vaccinations is
+    // required
+    Set<String> vaccinations = requiredVaccinations.get(key);
+    Set<String> requiredDocs = this.requiredDocuments.get(key);
+    if (isNullOrEmpty(vaccinations)) {
+      requiredDocs.remove(Person.Document.CERTIFICATE_OF_VACCINATION);
+    } else {
+      requiredDocs.add(Person.Document.CERTIFICATE_OF_VACCINATION);
     }
   }
 
-  private void updateRequiredVaccinations(String bulletin) {
-    final Map<String, Set<String>> newRequiredVaccinations = extractRequiredVaccinations(bulletin);
+  private void extractRequiredVaccinations(String bulletin) {
+    final Pattern pattern =
+        Pattern.compile(".*Citizens of (.+) require ([\\w\\s]+) vaccination\\n?.*");
+    Map<String, Set<String>> newRequiredVaccinations = doExtractVaccinations(bulletin, pattern);
     newRequiredVaccinations
         .entrySet()
         .forEach(
@@ -265,9 +302,13 @@ public class Inspector {
                       merged.addAll(newList);
                       return new HashSet<>(merged);
                     }));
+  }
 
-    final Map<String, Set<String>> noLongerRequiredVaccinations = extractNoLongerRequiredVaccinations(bulletin);
-    noLongerRequiredVaccinations
+  private void extractNoLongerRequiredVaccinations(String bulletin) {
+    final Pattern pattern =
+        Pattern.compile(".*Citizens of (.+) no longer require ([\\w\\s]+) vaccination\\n?.*");
+    Map<String, Set<String>> noLongerNeededVaccinations = doExtractVaccinations(bulletin, pattern);
+    noLongerNeededVaccinations
         .entrySet()
         .forEach(
             entry ->
@@ -279,35 +320,16 @@ public class Inspector {
                       merged.removeAll(newList);
                       return merged;
                     }));
-
-    // update also the required documents
-    ALL_COUNTRIES.stream()
-        .forEach(
-            key -> {
-              if (requiredVaccinations.get(key) != null
-                  && requiredVaccinations.get(key).isEmpty()
-                  && requiredDocuments.containsKey(key))
-                requiredDocuments.get(key).remove(Person.Document.CERTIFICATE_OF_VACCINATION);
-            });
-  }
-
-  private Map<String, Set<String>> extractRequiredVaccinations(String bulletin) {
-    final Pattern pattern = Pattern.compile(".*Citizens of (.+) require (\\w+) vaccination\\n?.*");
-    return doExtractVaccinations(bulletin, pattern);
-  }
-
-  private Map<String, Set<String>> extractNoLongerRequiredVaccinations(String bulletin) {
-    final Pattern pattern = Pattern.compile(".*Citizens of (.+) no longer require (\\w+) vaccination\\n?.*");
-    return doExtractVaccinations(bulletin, pattern);
   }
 
   private Map<String, Set<String>> doExtractVaccinations(String bulletin, Pattern pattern) {
-    // TODO: Multiple entries for vaccinations are possible
     final Matcher matcher = pattern.matcher(bulletin);
     Map<String, Set<String>> newMap = new HashMap<>();
     while (matcher.find()) {
-      Set<String> vaccines = Arrays.stream(matcher.group(2).split(",")).map(String::trim).collect(Collectors.toSet());
-      List<String> whoList = Arrays.stream(matcher.group(1).split(",")).map(String::trim).collect(Collectors.toList());
+      Set<String> vaccines =
+          Arrays.stream(matcher.group(2).split(",")).map(String::trim).collect(Collectors.toSet());
+      List<String> whoList =
+          Arrays.stream(matcher.group(1).split(",")).map(String::trim).collect(Collectors.toList());
       for (String who : whoList) {
         who = who.replaceAll("no longer", "").replaceAll("\\s+", " ").trim();
         Set<String> docs = requiredDocuments.computeIfAbsent(who, k -> new HashSet<>());
@@ -323,6 +345,10 @@ public class Inspector {
     final Matcher matcher = pattern.matcher(bulletin);
     return matcher.find() ? matcher.group(1) : null;
   }
+
+  static boolean isNullOrEmpty(final Collection<?> c) {
+    return c == null || c.isEmpty();
+  }
 }
 
 class Person {
@@ -335,7 +361,10 @@ class Person {
   }
 
   List<String> getNames() {
-    return documents.values().stream().map(Document::getName).distinct().collect(Collectors.toList());
+    return documents.values().stream()
+        .map(Document::getName)
+        .distinct()
+        .collect(Collectors.toList());
   }
 
   String getNation() {
@@ -354,12 +383,14 @@ class Person {
   }
 
   public Optional<Document.CertificateOfVaccination> getCertificateOfVaccination() {
-    return Optional.ofNullable((Document.CertificateOfVaccination) documents.get(Document.CERTIFICATE_OF_VACCINATION));
+    return Optional.ofNullable(
+        (Document.CertificateOfVaccination) documents.get(Document.CERTIFICATE_OF_VACCINATION));
   }
 
   public boolean isWorker() {
     return documents.containsKey(Document.ACCESS_PERMIT)
-        && "WORK".equals(((Document.AccessPermit) documents.get(Document.ACCESS_PERMIT)).getPurpose());
+        && "WORK"
+            .equals(((Document.AccessPermit) documents.get(Document.ACCESS_PERMIT)).getPurpose());
   }
 
   abstract static class Document {
@@ -468,8 +499,6 @@ class Person {
     }
 
     static class Passport extends Document {
-      private Date dob;
-
       private Passport(String content) {
         super(PASSPORT, content);
       }
@@ -542,7 +571,9 @@ class Person {
         Pattern pattern = Pattern.compile(".*ACCESS: (.+)");
         final Matcher matcher = pattern.matcher(content);
         return matcher.find()
-            ? Arrays.stream(matcher.group(1).split(",")).map(String::trim).collect(Collectors.toList())
+            ? Arrays.stream(matcher.group(1).split(","))
+                .map(String::trim)
+                .collect(Collectors.toList())
             : Collections.emptyList();
       }
 
@@ -565,7 +596,9 @@ class Person {
         Pattern pattern = Pattern.compile(".*VACCINES: (.+)");
         final Matcher matcher = pattern.matcher(content);
         return matcher.find()
-            ? Arrays.stream(matcher.group(1).split(",")).map(String::trim).collect(Collectors.toList())
+            ? Arrays.stream(matcher.group(1).split(","))
+                .map(String::trim)
+                .collect(Collectors.toList())
             : Collections.emptyList();
       }
 
