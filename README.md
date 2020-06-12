@@ -14,12 +14,14 @@ https://www.codewars.com/users/cinusmarco
 ### 7 Kyu
     - Complementary DNA
     - GPS Speed
+    - Halving Sum
     - Mumbling
+    - Nth power to rule them all
     - Vowel Count
     - You're a square
     - Poker hand is flush
     - Predict your age
-### 6 Kyu    
+### 6 Kyu
     - Bouncing ball
     - Create phone number
     - Detect pangram
@@ -38,13 +40,13 @@ https://www.codewars.com/users/cinusmarco
     - The deaf rats of Hamelin
     - Tribonacci sequence
     - Word a10n (abbreviation)
-    - Your order please    
+    - Your order please
 ### 5 Kyu
     - Common denominators
     - Decimal to Factorial and Back
     - Double cola
     - Human Readable Time
-    - Josephus survivor    
+    - Josephus survivor
     - Simple Pig Latin
 ### 4 Kyu
     - Hamming numbers
@@ -57,7 +59,7 @@ https://www.codewars.com/users/cinusmarco
     - Papers, please
     - Prime Streaming (PG-13)
 ### 2 Kyu
-    - Prime Streaming (NC-17) (WIP, to enhance speed)    
+    - Prime Streaming (NC-17) (WIP, to enhance speed)
 
-    
-    
+
+
