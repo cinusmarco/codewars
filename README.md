@@ -32,6 +32,7 @@ https://www.codewars.com/users/cinusmarco
     - Find the parity outlier
     - Morce Code Decoder
     - Multiples of 3 or 5
+    - Number Zoo Patrol
     - Persistent Bugger.
     - Roman numeral encoder
     - Split and then add both sides of an array together.
