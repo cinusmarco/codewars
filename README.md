@@ -12,6 +12,7 @@ https://www.codewars.com/users/cinusmarco
     - altERnaTIng cAsE <=> ALTerNAtiNG CaSe
     - Is it even?
 ### 7 Kyu
+    - Alternate capitalization
     - Complementary DNA
     - GPS Speed
     - Halving Sum
