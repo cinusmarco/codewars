@@ -24,6 +24,7 @@ https://www.codewars.com/users/cinusmarco
 ### 6 Kyu
     - Bouncing ball
     - Create phone number
+    - Delete occurrences of an element if it occurs more than n times
     - Detect pangram
     - Disease Spread
     - Encrypt this!
