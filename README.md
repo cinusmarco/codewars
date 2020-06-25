@@ -53,6 +53,7 @@ https://www.codewars.com/users/cinusmarco
     - Simple Pig Latin
 ### 4 Kyu
     - Hamming numbers
+    - Human readable duration format
     - parseInt() reloaded
     - Permutations
     - Ranking System
