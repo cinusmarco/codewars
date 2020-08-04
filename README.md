@@ -24,6 +24,7 @@ https://www.codewars.com/users/cinusmarco
     - Predict your age
 ### 6 Kyu
     - Bouncing ball
+    - Crack the PIN
     - Create phone number
     - Delete occurrences of an element if it occurs more than n times
     - Detect pangram
