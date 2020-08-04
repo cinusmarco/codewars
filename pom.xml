@@ -54,6 +54,13 @@
       <version>${assertj-core.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+    <dependency>
+      <artifactId>guava</artifactId>
+      <groupId>com.google.guava</groupId>
+      <version>29.0-jre</version>
+    </dependency>
+
 
   </dependencies>
 
