@@ -50,6 +50,7 @@ https://www.codewars.com/users/cinusmarco
     - Decimal to Factorial and Back
     - Double cola
     - Human Readable Time
+    - Int32 to IPv4
     - Josephus survivor
     - Simple Pig Latin
 ### 4 Kyu
