@@ -40,6 +40,7 @@ https://www.codewars.com/users/cinusmarco
     - Split and then add both sides of an array together.
     - Stop gninnipS My sdroW!
     - Strongest Even Number
+    - Sum of Parts
     - The deaf rats of Hamelin
     - Tribonacci sequence
     - Word a10n (abbreviation)
