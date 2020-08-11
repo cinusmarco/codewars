@@ -50,6 +50,7 @@ https://www.codewars.com/users/cinusmarco
     - Common denominators
     - Decimal to Factorial and Back
     - Double cola
+    - Evaluate a postfix expression
     - Human Readable Time
     - Int32 to IPv4
     - Josephus survivor
