@@ -6,27 +6,30 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class MorseCodeDecoder {
-  private static Map<String, String> morseTable =
-      Map.ofEntries(
-          Map.entry(".-", "A"),
-          Map.entry("-...", "B"),
-          Map.entry("-.-.", "C"),
-          Map.entry("-..", "D"),
-          Map.entry(".", "E"),
-          Map.entry("..-.", "F"),
-          Map.entry("--.", "G"),
-          Map.entry("....", "H"),
-          Map.entry("..", "I"),
-          Map.entry(".---", "J"),
-          Map.entry("-.-", "K"),
-          Map.entry(".-..", "L"),
-          Map.entry("--", "M"),
-          Map.entry("-.", "N"),
-          Map.entry("---", "O"),
-          Map.entry(".--.", "P"),
-          Map.entry("--.-", "Q"),
-          Map.entry(".-.", "R"),
-          Map.entry("...", "S"),
+
+  public static final int PAUSE_WORDS = 7;
+  public static final int PAUSE_LETTERS = 3;
+  private static final Map<String, String> morseTable =
+          Map.ofEntries(
+                  Map.entry(".-", "A"),
+                  Map.entry("-...", "B"),
+                  Map.entry("-.-.", "C"),
+                  Map.entry("-..", "D"),
+                  Map.entry(".", "E"),
+                  Map.entry("..-.", "F"),
+                  Map.entry("--.", "G"),
+                  Map.entry("....", "H"),
+                  Map.entry("..", "I"),
+                  Map.entry(".---", "J"),
+                  Map.entry("-.-", "K"),
+                  Map.entry(".-..", "L"),
+                  Map.entry("--", "M"),
+                  Map.entry("-.", "N"),
+                  Map.entry("---", "O"),
+                  Map.entry(".--.", "P"),
+                  Map.entry("--.-", "Q"),
+                  Map.entry(".-.", "R"),
+                  Map.entry("...", "S"),
           Map.entry("-", "T"),
           Map.entry("..-", "U"),
           Map.entry("...-", "V"),
@@ -54,47 +57,66 @@ public class MorseCodeDecoder {
     System.err.println(sentenceBits);
     // filter out leading 0s
     final var significantBits = sentenceBits.replaceFirst("^0*", "").replaceFirst("0*$", "");
-    final var timeUnitLengthZeros = detectTimeUnitLengthZeros(significantBits);
-    final var timeUnitLengthOnes = detectTimeUnitLengthOnes(significantBits);
+    final var tuPause = detectTimeUnitLengthZeros(significantBits);
+    final var tuSignal = detectTimeUnitLengthOnes(significantBits);
     // split sequence into words - pause between words is 7 TU
-    final var bitWords = significantBits.split("0".repeat(timeUnitLengthZeros * 7));
+    final var bitWords = extractWords(significantBits, tuPause);
 
-    return Arrays.stream(bitWords)
-        .map(word -> word.split("0".repeat(timeUnitLengthZeros * 3)))
-        .map(
-            letter ->
-                Arrays.stream(letter)
-                    .map(k -> bitsToDotAndDashes(k, timeUnitLengthZeros, timeUnitLengthOnes))
-                    .collect(Collectors.joining(" ")))
-        .collect(Collectors.joining("   "));
+    final var letters =
+            Arrays.stream(bitWords)
+                    .map(word -> extractLetters(word, tuPause))
+                    .collect(Collectors.toList());
+
+    return letters.stream()
+            .map(
+                    letter ->
+                            Arrays.stream(letter)
+                                    .map(k -> bitsToDotAndDashes(k, tuPause, tuSignal))
+                                    .collect(Collectors.joining(" ")))
+            .collect(Collectors.joining("   "));
+  }
+
+  private static String[] extractWords(String significantBits, int timeUnitLengthZeros) {
+    return significantBits.split("0".repeat(timeUnitLengthZeros * PAUSE_WORDS));
+  }
+
+  private static String[] extractLetters(String wordBits, int timeUnitLengthZeros) {
+    return wordBits.split("0".repeat(timeUnitLengthZeros * PAUSE_LETTERS));
   }
 
   public static String decodeMorse(String morseCode) {
     return Arrays.stream(morseCode.trim().split("\\s{3}"))
-        .map(
-            morseWord ->
-                Arrays.stream(morseWord.split("\\s"))
-                    .map(morseChar -> morseTable.get(morseChar))
-                    .collect(Collectors.joining("")))
-        .collect(Collectors.joining(" "));
+            .map(
+                    morseWord ->
+                            Arrays.stream(morseWord.split("\\s"))
+                                    .map(morseChar -> morseTable.get(morseChar))
+                                    .collect(Collectors.joining("")))
+            .collect(Collectors.joining(" "));
   }
 
   private static int detectTimeUnitLengthZeros(String bits) {
     final var patternZeros = Pattern.compile("1+(0+)1+");
     final var matcherZeros = patternZeros.matcher(bits);
+    var tuPause = 1;
     if (matcherZeros.find()) {
-      return matcherZeros.group(1).length();
+      final var length = matcherZeros.group(1).length();
+      if (length % 3 == 0) {
+        tuPause = length / 3;
+      } else {
+        tuPause = length;
+      }
     }
-    return 1;
+    return tuPause;
   }
 
   private static int detectTimeUnitLengthOnes(String bits) {
     final var patternOnes = Pattern.compile("0*(1+)0*");
     final var matcherOnes = patternOnes.matcher(bits);
+    var tuSignal = 1;
     if (matcherOnes.find()) {
-      return matcherOnes.group(1).length();
+      tuSignal = matcherOnes.group(1).length();
     }
-    return 1;
+    return tuSignal;
   }
 
   private static String bitsToDotAndDashes(String input, int timeUnitZeros, int timeUnitOnes) {

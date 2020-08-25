@@ -30,13 +30,22 @@ class MorseCodeDecoderTest {
 
   private static Stream<Arguments> providerBits() {
     return Stream.of(
-        Arguments.of(
-            "1100110011001100000011000000111111001100111111001111110000000000000011001111110011111100111111000000110011001111110000001111110011001100000011",
-            ".... . -.--   .--- ..- -.. ."),
-        Arguments.of("01110", "."),
-        Arguments.of("000000011100000", "."),
-        Arguments.of("1", "."),
-        Arguments.of("101", ". ."));
+            Arguments.of(
+                    "1100110011001100000011000000111111001100111111001111110000000000000011001111110011111100111111000000110011001111110000001111110011001100000011",
+                    ".... . -.--   .--- ..- -.. ."),
+            Arguments.of("01110", "."),
+            Arguments.of("000000011100000", "."),
+            Arguments.of("1", "."),
+            Arguments.of("101", ".."),
+            Arguments.of("11011", ".."),
+            Arguments.of("10001", ". ."),
+            Arguments.of("10000001", ". ."),
+            Arguments.of("1110111", "--"),
+            Arguments.of("1111110111111", "--"),
+            Arguments.of("10000000001", ". ."),
+            Arguments.of("1100011", ". ."),
+            Arguments.of("111000111", ". .")
+    );
   }
 
   private static Stream<Arguments> providerMorse() {
@@ -49,6 +58,11 @@ class MorseCodeDecoderTest {
   }
 
   private static Stream<Arguments> providerCompleteDecode() {
-    return Stream.of(Arguments.of("1", "E"), Arguments.of("101", "EE"));
+    return Stream.of(
+            Arguments.of("1", "E"),
+            Arguments.of("101", "I"),
+            Arguments.of(
+                    "1100110011001100000011000000111111001100111111001111110000000000000011001111110011111100111111000000110011001111110000001111110011001100000011",
+                    "HEY JUDE"));
   }
 }
