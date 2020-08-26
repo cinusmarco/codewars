@@ -10,26 +10,26 @@ public class MorseCodeDecoder {
   public static final int PAUSE_WORDS = 7;
   public static final int PAUSE_LETTERS = 3;
   private static final Map<String, String> morseTable =
-          Map.ofEntries(
-                  Map.entry(".-", "A"),
-                  Map.entry("-...", "B"),
-                  Map.entry("-.-.", "C"),
-                  Map.entry("-..", "D"),
-                  Map.entry(".", "E"),
-                  Map.entry("..-.", "F"),
-                  Map.entry("--.", "G"),
-                  Map.entry("....", "H"),
-                  Map.entry("..", "I"),
-                  Map.entry(".---", "J"),
-                  Map.entry("-.-", "K"),
-                  Map.entry(".-..", "L"),
-                  Map.entry("--", "M"),
-                  Map.entry("-.", "N"),
-                  Map.entry("---", "O"),
-                  Map.entry(".--.", "P"),
-                  Map.entry("--.-", "Q"),
-                  Map.entry(".-.", "R"),
-                  Map.entry("...", "S"),
+      Map.ofEntries(
+          Map.entry(".-", "A"),
+          Map.entry("-...", "B"),
+          Map.entry("-.-.", "C"),
+          Map.entry("-..", "D"),
+          Map.entry(".", "E"),
+          Map.entry("..-.", "F"),
+          Map.entry("--.", "G"),
+          Map.entry("....", "H"),
+          Map.entry("..", "I"),
+          Map.entry(".---", "J"),
+          Map.entry("-.-", "K"),
+          Map.entry(".-..", "L"),
+          Map.entry("--", "M"),
+          Map.entry("-.", "N"),
+          Map.entry("---", "O"),
+          Map.entry(".--.", "P"),
+          Map.entry("--.-", "Q"),
+          Map.entry(".-.", "R"),
+          Map.entry("...", "S"),
           Map.entry("-", "T"),
           Map.entry("..-", "U"),
           Map.entry("...-", "V"),
@@ -58,22 +58,22 @@ public class MorseCodeDecoder {
     // filter out leading 0s
     final var significantBits = sentenceBits.replaceFirst("^0*", "").replaceFirst("0*$", "");
     final var tuPause = detectTimeUnitLengthZeros(significantBits);
-    final var tuSignal = detectTimeUnitLengthOnes(significantBits);
+    final var tuSignal = detectTimeUnitLengthOnes(significantBits, tuPause);
     // split sequence into words - pause between words is 7 TU
     final var bitWords = extractWords(significantBits, tuPause);
 
     final var letters =
-            Arrays.stream(bitWords)
-                    .map(word -> extractLetters(word, tuPause))
-                    .collect(Collectors.toList());
+        Arrays.stream(bitWords)
+            .map(word -> extractLetters(word, tuPause))
+            .collect(Collectors.toList());
 
     return letters.stream()
-            .map(
-                    letter ->
-                            Arrays.stream(letter)
-                                    .map(k -> bitsToDotAndDashes(k, tuPause, tuSignal))
-                                    .collect(Collectors.joining(" ")))
-            .collect(Collectors.joining("   "));
+        .map(
+            letter ->
+                Arrays.stream(letter)
+                    .map(k -> bitsToDotAndDashes(k, tuPause, tuSignal))
+                    .collect(Collectors.joining(" ")))
+        .collect(Collectors.joining("   "));
   }
 
   private static String[] extractWords(String significantBits, int timeUnitLengthZeros) {
@@ -86,12 +86,12 @@ public class MorseCodeDecoder {
 
   public static String decodeMorse(String morseCode) {
     return Arrays.stream(morseCode.trim().split("\\s{3}"))
-            .map(
-                    morseWord ->
-                            Arrays.stream(morseWord.split("\\s"))
-                                    .map(morseChar -> morseTable.get(morseChar))
-                                    .collect(Collectors.joining("")))
-            .collect(Collectors.joining(" "));
+        .map(
+            morseWord ->
+                Arrays.stream(morseWord.split("\\s"))
+                    .map(morseChar -> morseTable.get(morseChar))
+                    .collect(Collectors.joining("")))
+        .collect(Collectors.joining(" "));
   }
 
   private static int detectTimeUnitLengthZeros(String bits) {
@@ -109,12 +109,15 @@ public class MorseCodeDecoder {
     return tuPause;
   }
 
-  private static int detectTimeUnitLengthOnes(String bits) {
+  private static int detectTimeUnitLengthOnes(String bits, int tuPause) {
     final var patternOnes = Pattern.compile("0*(1+)0*");
     final var matcherOnes = patternOnes.matcher(bits);
     var tuSignal = 1;
     if (matcherOnes.find()) {
       tuSignal = matcherOnes.group(1).length();
+    }
+    if (tuSignal > tuPause) {
+      tuSignal = tuPause;
     }
     return tuSignal;
   }
