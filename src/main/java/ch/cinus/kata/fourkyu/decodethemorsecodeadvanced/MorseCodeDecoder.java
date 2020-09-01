@@ -5,15 +5,19 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/*TODO: Legare il tuSignal con il tuPause. Se l'operatore è abbastanza bravo da fare delle vere pause di 1 è anche in
+    grado di mandare il segnale con la stessa frequenza. Stesso discorso se è in grado di mandare il segnale con
+    tempi 1*/
+
 public class MorseCodeDecoder {
 
   public static final int PAUSE_WORDS = 7;
   public static final int PAUSE_LETTERS = 3;
   private static final Map<String, String> morseTable =
-      Map.ofEntries(
-          Map.entry(".-", "A"),
-          Map.entry("-...", "B"),
-          Map.entry("-.-.", "C"),
+          Map.ofEntries(
+                  Map.entry(".-", "A"),
+                  Map.entry("-...", "B"),
+                  Map.entry("-.-.", "C"),
           Map.entry("-..", "D"),
           Map.entry(".", "E"),
           Map.entry("..-.", "F"),
@@ -58,7 +62,7 @@ public class MorseCodeDecoder {
     // filter out leading 0s
     final var significantBits = sentenceBits.replaceFirst("^0*", "").replaceFirst("0*$", "");
     final var tuPause = detectTimeUnitLengthZeros(significantBits);
-    final var tuSignal = detectTimeUnitLengthOnes(significantBits, tuPause);
+    final var tuSignal = detectTimeUnitLengthOnes(significantBits);
     // split sequence into words - pause between words is 7 TU
     final var bitWords = extractWords(significantBits, tuPause);
 
@@ -88,8 +92,8 @@ public class MorseCodeDecoder {
     return Arrays.stream(morseCode.trim().split("\\s{3}"))
         .map(
             morseWord ->
-                Arrays.stream(morseWord.split("\\s"))
-                    .map(morseChar -> morseTable.get(morseChar))
+                    Arrays.stream(morseWord.split("\\s"))
+                            .map(morseTable::get)
                     .collect(Collectors.joining("")))
         .collect(Collectors.joining(" "));
   }
@@ -97,29 +101,22 @@ public class MorseCodeDecoder {
   private static int detectTimeUnitLengthZeros(String bits) {
     final var patternZeros = Pattern.compile("1+(0+)1+");
     final var matcherZeros = patternZeros.matcher(bits);
-    var tuPause = 1;
-    if (matcherZeros.find()) {
-      final var length = matcherZeros.group(1).length();
-      if (length % 3 == 0) {
-        tuPause = length / 3;
-      } else {
-        tuPause = length;
-      }
+    var tuPause = Integer.MAX_VALUE;
+    while (matcherZeros.find()) {
+      tuPause = Math.min(matcherZeros.group(1).length(), tuPause);
     }
-    return tuPause;
+    return tuPause == Integer.MAX_VALUE ? 1 : tuPause;
   }
 
-  private static int detectTimeUnitLengthOnes(String bits, int tuPause) {
+  private static int detectTimeUnitLengthOnes(String bits) {
+
     final var patternOnes = Pattern.compile("0*(1+)0*");
     final var matcherOnes = patternOnes.matcher(bits);
-    var tuSignal = 1;
-    if (matcherOnes.find()) {
-      tuSignal = matcherOnes.group(1).length();
+    var shortestSignalLength = Integer.MAX_VALUE;
+    while (matcherOnes.find()) {
+      shortestSignalLength = Math.min(matcherOnes.group(1).length(), shortestSignalLength);
     }
-    if (tuSignal > tuPause) {
-      tuSignal = tuPause;
-    }
-    return tuSignal;
+    return shortestSignalLength;
   }
 
   private static String bitsToDotAndDashes(String input, int timeUnitZeros, int timeUnitOnes) {
