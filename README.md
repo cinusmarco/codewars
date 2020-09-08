@@ -26,6 +26,7 @@ https://www.codewars.com/users/cinusmarco
     - Bouncing ball
     - Crack the PIN
     - Create phone number
+    - Data Reverse
     - Delete occurrences of an element if it occurs more than n times
     - Detect pangram
     - Disease Spread
