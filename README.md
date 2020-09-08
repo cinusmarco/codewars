@@ -56,6 +56,7 @@ https://www.codewars.com/users/cinusmarco
     - Josephus survivor
     - Simple Pig Latin
 ### 4 Kyu
+    - Decode the Morse code, advanced
     - Hamming numbers
     - Human readable duration format
     - parseInt() reloaded

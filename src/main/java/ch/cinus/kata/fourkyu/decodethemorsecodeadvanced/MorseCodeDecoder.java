@@ -5,10 +5,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-/*TODO: Legare il tuSignal con il tuPause. Se l'operatore è abbastanza bravo da fare delle vere pause di 1 è anche in
-    grado di mandare il segnale con la stessa frequenza. Stesso discorso se è in grado di mandare il segnale con
-    tempi 1*/
-
 public class MorseCodeDecoder {
 
   public static final int PAUSE_WORDS = 7;
@@ -18,16 +14,16 @@ public class MorseCodeDecoder {
                   Map.entry(".-", "A"),
                   Map.entry("-...", "B"),
                   Map.entry("-.-.", "C"),
-          Map.entry("-..", "D"),
-          Map.entry(".", "E"),
-          Map.entry("..-.", "F"),
-          Map.entry("--.", "G"),
-          Map.entry("....", "H"),
-          Map.entry("..", "I"),
-          Map.entry(".---", "J"),
-          Map.entry("-.-", "K"),
-          Map.entry(".-..", "L"),
-          Map.entry("--", "M"),
+                  Map.entry("-..", "D"),
+                  Map.entry(".", "E"),
+                  Map.entry("..-.", "F"),
+                  Map.entry("--.", "G"),
+                  Map.entry("....", "H"),
+                  Map.entry("..", "I"),
+                  Map.entry(".---", "J"),
+                  Map.entry("-.-", "K"),
+                  Map.entry(".-..", "L"),
+                  Map.entry("--", "M"),
           Map.entry("-.", "N"),
           Map.entry("---", "O"),
           Map.entry(".--.", "P"),
@@ -58,24 +54,23 @@ public class MorseCodeDecoder {
           Map.entry("...---...", "SOS"));
 
   public static String decodeBits(String sentenceBits) {
-    System.err.println(sentenceBits);
-    // filter out leading 0s
+    // filter out leading and trailing 0s
     final var significantBits = sentenceBits.replaceFirst("^0*", "").replaceFirst("0*$", "");
-    final var tuPause = detectTimeUnitLengthZeros(significantBits);
-    final var tuSignal = detectTimeUnitLengthOnes(significantBits);
+
+    final var tu =
+            Math.min(
+                    detectTimeUnitLengthZeros(significantBits), detectTimeUnitLengthOnes(significantBits));
     // split sequence into words - pause between words is 7 TU
-    final var bitWords = extractWords(significantBits, tuPause);
+    final var bitWords = extractWords(significantBits, tu);
 
     final var letters =
-        Arrays.stream(bitWords)
-            .map(word -> extractLetters(word, tuPause))
-            .collect(Collectors.toList());
+            Arrays.stream(bitWords).map(word -> extractLetters(word, tu)).collect(Collectors.toList());
 
     return letters.stream()
-        .map(
-            letter ->
-                Arrays.stream(letter)
-                    .map(k -> bitsToDotAndDashes(k, tuPause, tuSignal))
+            .map(
+                    letter ->
+                            Arrays.stream(letter)
+                                    .map(k -> bitsToDotAndDashes(k, tu))
                     .collect(Collectors.joining(" ")))
         .collect(Collectors.joining("   "));
   }
@@ -91,10 +86,10 @@ public class MorseCodeDecoder {
   public static String decodeMorse(String morseCode) {
     return Arrays.stream(morseCode.trim().split("\\s{3}"))
         .map(
-            morseWord ->
-                    Arrays.stream(morseWord.split("\\s"))
-                            .map(morseTable::get)
-                    .collect(Collectors.joining("")))
+                morseWord ->
+                        Arrays.stream(morseWord.split("\\s"))
+                                .map(morseTable::get)
+                                .collect(Collectors.joining("")))
         .collect(Collectors.joining(" "));
   }
 
@@ -105,7 +100,7 @@ public class MorseCodeDecoder {
     while (matcherZeros.find()) {
       tuPause = Math.min(matcherZeros.group(1).length(), tuPause);
     }
-    return tuPause == Integer.MAX_VALUE ? 1 : tuPause;
+    return tuPause;
   }
 
   private static int detectTimeUnitLengthOnes(String bits) {
@@ -119,11 +114,11 @@ public class MorseCodeDecoder {
     return shortestSignalLength;
   }
 
-  private static String bitsToDotAndDashes(String input, int timeUnitZeros, int timeUnitOnes) {
+  private static String bitsToDotAndDashes(String input, int tu) {
     return input
-        .replaceAll("111".repeat(timeUnitOnes), "-")
-        .replaceAll("1".repeat(timeUnitOnes), ".")
-        .replaceAll("000".repeat(timeUnitZeros), " ")
-        .replaceAll("0".repeat(timeUnitZeros), "");
+            .replaceAll("111".repeat(tu), "-")
+            .replaceAll("1".repeat(tu), ".")
+            .replaceAll("000".repeat(tu), " ")
+            .replaceAll("0".repeat(tu), "");
   }
 }

@@ -37,13 +37,7 @@ class MorseCodeDecoderTest {
             Arguments.of("000000011100000", "."),
             Arguments.of("1", "."),
             Arguments.of("101", ".."),
-            Arguments.of("11011", ".."),
-            Arguments.of("10001", ". ."),
-            Arguments.of("10000001", ". ."),
-            Arguments.of("1110111", "--"),
-            Arguments.of("10000000001", ". ."),
-            Arguments.of("1100011", ". ."),
-            Arguments.of("111000111", ". ."));
+            Arguments.of("1110111", "--"));
   }
 
   private static Stream<Arguments> providerMorse() {
