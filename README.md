@@ -40,6 +40,7 @@ https://www.codewars.com/users/cinusmarco
     - Persistent Bugger.
     - Roman numeral encoder
     - Split and then add both sides of an array together.
+    - Split Strings
     - Stop gninnipS My sdroW!
     - Strongest Even Number
     - Sum of Parts
@@ -69,4 +70,5 @@ https://www.codewars.com/users/cinusmarco
     - Papers, please
     - Prime Streaming (PG-13)
 ### 2 Kyu
-    - Prime Streaming (NC-17) 
+    - Prime Streaming (NC-17) b.com
+    
