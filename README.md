@@ -61,6 +61,7 @@ https://www.codewars.com/users/cinusmarco
     - Decode the Morse code, advanced
     - Hamming numbers
     - Human readable duration format
+    - Matrix Determinant
     - parseInt() reloaded
     - Permutations
     - Ranking Poker Hands
