@@ -1,11 +1,12 @@
 package ch.cinus.kata.fourkyu.pokerhand;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class PokerHandTest {
 
@@ -31,6 +32,7 @@ class PokerHandTest {
             Arguments.of("Pair wins of nothing", loss, "2S AH 4H 5S KC", "AH AC 5H 6H 7S"),
             Arguments.of("Highest card loses", loss, "2S 3H 6H 7S 9C", "7H 3C TH 6H 9S"),
             Arguments.of("Highest card wins", win, "4S 5H 6H TS AC", "3S 5S 6S TC AS"),
+            Arguments.of("Flush with higher kickers wins (Impossible case)", loss, "2H 2C 3S 3H 3D", "KH KC 3S 3H 3D"),
             Arguments.of("Equal cards is tie", tie, "2S AH 4H 5S 6C", "AD 4C 5H 6H 2C"));
   }
 

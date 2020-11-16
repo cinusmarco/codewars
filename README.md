@@ -63,6 +63,7 @@ https://www.codewars.com/users/cinusmarco
     - Human readable duration format
     - parseInt() reloaded
     - Permutations
+    - Ranking Poker Hands
     - Ranking System
     - Strip comments
 ### 3 Kyu
@@ -71,4 +72,3 @@ https://www.codewars.com/users/cinusmarco
     - Prime Streaming (PG-13)
 ### 2 Kyu
     - Prime Streaming (NC-17) b.com
-    

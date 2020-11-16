@@ -2,12 +2,21 @@ package ch.cinus.kata.fourkyu.pokerhand;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class PokerHand {
+
+  public static final long TWO_OF_A_KIND_VALUE = 100L;
+  public static final long TWO_PAIRS_VALUE = TWO_OF_A_KIND_VALUE * 10;
+  public static final long THREE_OF_A_KIND_VALUE = TWO_PAIRS_VALUE * 10;
+  public static final long STRAIGHT_VALUE = THREE_OF_A_KIND_VALUE * 10;
+  public static final long FLUSH_VALUE = STRAIGHT_VALUE * 10;
+  public static final long FULL_HOUSE_VALUE = FLUSH_VALUE * 10;
+  public static final long FOUR_OF_A_KIND_VALUE = FULL_HOUSE_VALUE * 10;
+  public static final long STRAIGHT_FLUSH_VALUE = FOUR_OF_A_KIND_VALUE * 10;
 
   public enum Result {
     TIE,
@@ -16,29 +25,52 @@ public class PokerHand {
   }
 
   private final List<Card> cards;
-  private final int rank;
+  private long rank;
+  private List<Integer> kickers;
 
   PokerHand(String hand) {
     final var rawCards = hand.split(" ");
     cards = Arrays.stream(rawCards).map(Card::new).collect(Collectors.toList());
     Collections.sort(cards);
-    rank = computeRank();
+    computeRankAndKickers();
   }
 
-  private int computeRank() {
-    var rank = 0;
-    rank += isStraight() && isFlush() ? 1000000000 : 0;
-    rank += isFourOfAKind() ? 100000000 : 0;
-    rank += isFullHouse() ? 10000000 : 0;
-    rank += isFlush() ? 1000000 : 0;
-    rank += isStraight() ? 100000 : 0;
-    rank += isThreeOfAKind() ? 10000 : 0;
-//    rank += isTwoPairs() ? 1000 : 0;
-    rank += isTwoOfAKind() ? 1000 : 0;
+  private void computeRankAndKickers() {
+    rank = computeRank();
+    kickers = computeKickers();
+    Collections.sort(kickers);
+  }
 
-    rank += highestCard();
-    System.err.println(cards + " --> " + rank);
-    return rank;
+  private long computeRank() {
+    var localRank = 0L;
+    if (isStraight() && isFlush()) {
+      localRank += STRAIGHT_FLUSH_VALUE;
+    } else if (isFourOfAKind()) {
+      localRank += FOUR_OF_A_KIND_VALUE;
+    } else if (isFullHouse()) {
+      localRank += FULL_HOUSE_VALUE;
+    } else if (isFlush()) {
+      localRank += FLUSH_VALUE;
+    } else if (isStraight()) {
+      localRank += STRAIGHT_VALUE;
+    } else if (isThreeOfAKind()) {
+      localRank += THREE_OF_A_KIND_VALUE;
+    } else if (isTwoPairs()) {
+      localRank += TWO_PAIRS_VALUE;
+    } else if (isTwoOfAKind()) {
+      localRank += TWO_OF_A_KIND_VALUE;
+    }
+    localRank += highestCard();
+
+    return localRank;
+  }
+
+  private List<Integer> computeKickers() {
+    final var map = cards.stream().map(Card::getValue).collect(Collectors.groupingBy(Integer::intValue));
+    return map.entrySet().stream()
+        .filter(entry -> entry.getValue().size() == 1)
+        .map(Map.Entry::getKey)
+        .collect(Collectors.toList());
   }
 
   public Result compareWith(PokerHand other) {
@@ -47,6 +79,38 @@ public class PokerHand {
       result = Result.WIN;
     } else if (this.rank < other.rank) {
       result = Result.LOSS;
+    } else {
+      // we have a tie, lets check the kickers
+      result = compareKickers(other);
+    }
+
+    // special cases (imperfect situations in Kata)
+    result = tieBreakerWhenFullHouse(other, result);
+    return result;
+  }
+
+  private Result tieBreakerWhenFullHouse(PokerHand other, Result result) {
+    if (result == Result.TIE && isFullHouse()) {
+      // compare the
+      final Integer mySupport = nofAKind(2).get(0);
+      final Integer otherSupport = other.nofAKind(2).get(0);
+      if (mySupport > otherSupport) {
+        result = Result.WIN;
+      } else if (mySupport < otherSupport) {
+        result = Result.LOSS;
+      }
+    }
+    return result;
+  }
+
+  private Result compareKickers(PokerHand other) {
+    Result result = Result.TIE;
+    for (int i = 0; i < this.kickers.size(); i++) {
+      if (this.kickers.get(i) > other.kickers.get(i)) {
+        result = Result.WIN;
+      } else if (this.kickers.get(i) < other.kickers.get(i)) {
+        result = Result.LOSS;
+      }
     }
     return result;
   }
@@ -58,9 +122,7 @@ public class PokerHand {
   private boolean isStraight() {
     var actual = cards.stream().map(Card::getValue).collect(Collectors.toList());
     var computed =
-            IntStream.range(cards.get(0).getValue(), cards.get(0).getValue() + 5)
-                    .boxed()
-                    .collect(Collectors.toList());
+        IntStream.range(cards.get(0).getValue(), cards.get(0).getValue() + 5).boxed().collect(Collectors.toList());
     return actual.equals(computed);
   }
 
@@ -96,18 +158,19 @@ public class PokerHand {
     return isNofAKind(2);
   }
 
+  private boolean isTwoPairs() {
+    final var map = cards.stream().map(Card::getValue).collect(Collectors.groupingBy(Integer::intValue));
+    return map.size() == 3;
+  }
+
   private boolean isNofAKind(int i) {
-    final var map =
-            cards.stream().map(Card::getValue).collect(Collectors.groupingBy(Integer::intValue));
+    final var map = cards.stream().map(Card::getValue).collect(Collectors.groupingBy(Integer::intValue));
     return map.values().stream().anyMatch(ints -> ints.size() == i);
   }
 
   private List<Integer> nofAKind(int i) {
-    final var map =
-            cards.stream().map(Card::getValue).collect(Collectors.groupingBy(Integer::intValue));
-    return map.values().stream()
-            .max(Comparator.comparingInt(List::size))
-            .orElse(Collections.emptyList());
+    final var map = cards.stream().map(Card::getValue).collect(Collectors.groupingBy(Integer::intValue));
+    return map.values().stream().filter(ints -> ints.size() == i).findFirst().orElse(Collections.emptyList());
   }
 
   private static class Card implements Comparable<Card> {
