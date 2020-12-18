@@ -44,6 +44,7 @@ https://www.codewars.com/users/cinusmarco
     - Stop gninnipS My sdroW!
     - Strongest Even Number
     - Sum of Parts
+    - Take a Ten Minute Walk
     - The deaf rats of Hamelin
     - Tribonacci sequence
     - Word a10n (abbreviation)
