@@ -1,12 +1,13 @@
 package ch.cinus.kata.sixkyu.countingduplicates;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CountingDuplicatesTest {
 
@@ -33,6 +34,7 @@ class CountingDuplicatesTest {
         Arguments.of("abcde", 0),
         Arguments.of("abcdea", 1),
         Arguments.of("indivisibility", 1),
-        Arguments.of("indivisibility", 1));
+        Arguments.of("aA11", 2),
+        Arguments.of("indivisibilities", 2));
   }
 }
